@@ -29,3 +29,44 @@ The **Clinic Booking System** is a web-based application built using the MERN St
 | Version Control | Git & GitHub |
 
 ## 🧩 System Architecture
+┌──────────────────────────┐
+│ Frontend (React) │
+│ • User Interface (UI) │
+│ • Booking Pages │
+│ • Forms & Validation │
+└────────────┬─────────────┘
+│ REST API
+┌────────────▼─────────────┐
+│ Backend (Node + Express)│
+│ • Routes & Controllers │
+│ • Authentication Logic │
+│ • Appointment Handling │
+└────────────┬─────────────┘
+│
+┌────────────▼─────────────┐
+│ Database (MongoDB) │
+│ • User Data │
+│ • Doctor Profiles │
+│ • Appointments │
+└──────────────────────────┘
+
+## 🧠 Future Enhancements
+- 📱 Add SMS or email notifications for appointments.
+- 💳 Integrate payment gateways for online consultation fees.
+- 📈 Add analytics dashboard for patient visit statistics.
+- 🧾 Generate printable appointment summaries or receipts.
+- 🌍 Multi-language support for wider accessibility.
+
+## 🤝 Acknowledgements
+- This project is developed as part of the Power Learn Project (PLP) Africa initiative under the
+Web Development Cohort VIII – July 2025 training program.
+- Special thanks to PLP mentors and the developer community for guidance and resources.
+
+
+## 👨‍💻 Author
+- Sadick Ally
+- Web Development Student | Technology Enthusiast | PLP Cohort VIII
+- 📧 Email: [sadickally127@gmail.com]
+- 🌐 GitHub: https://github.com/sadickally127
+-  Phone: +255684092596
+- 📍 Arusha, Tanzania
