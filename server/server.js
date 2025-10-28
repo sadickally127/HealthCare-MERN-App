@@ -17,8 +17,8 @@ app.get('/', (req, res) => {
 });
 
 // Import routes (uncomment when ready)
-// const patientRoutes = require('./routes/patientRoutes');
-// app.use('/api/patients', patientRoutes);
+const patientRoutes = require('./routes/patientRoutes');
+app.use('/api/patients', patientRoutes);
 
 const PORT = process.env.PORT || 9000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

@@ -1,7 +1,19 @@
-const Patient = require('../models/patientModel');
+// controllers/patientController.js
+const Patient = require('../models/Patient');
 
-// @desc    Get all patients
-// @route   GET /api/patients
+// @desc Create new patient
+// @route POST /api/patients
+exports.createPatient = async (req, res) => {
+  try {
+    const patient = await Patient.create(req.body);
+    res.status(201).json(patient);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+// @desc Get all patients
+// @route GET /api/patients
 exports.getPatients = async (req, res) => {
   try {
     const patients = await Patient.find();
@@ -11,19 +23,8 @@ exports.getPatients = async (req, res) => {
   }
 };
 
-// @desc    Add new patient
-// @route   POST /api/patients
-exports.addPatient = async (req, res) => {
-  try {
-    const patient = await Patient.create(req.body);
-    res.status(201).json(patient);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-};
-
-// @desc    Get patient by ID
-// @route   GET /api/patients/:id
+// @desc Get a single patient by ID
+// @route GET /api/patients/:id
 exports.getPatientById = async (req, res) => {
   try {
     const patient = await Patient.findById(req.params.id);
@@ -34,26 +35,27 @@ exports.getPatientById = async (req, res) => {
   }
 };
 
-// @desc    Update patient
-// @route   PUT /api/patients/:id
+// @desc Update a patient
+// @route PUT /api/patients/:id
 exports.updatePatient = async (req, res) => {
   try {
-    const updated = await Patient.findByIdAndUpdate(req.params.id, req.body, {
+    const patient = await Patient.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
+      runValidators: true
     });
-    if (!updated) return res.status(404).json({ message: 'Patient not found' });
-    res.status(200).json(updated);
+    if (!patient) return res.status(404).json({ message: 'Patient not found' });
+    res.status(200).json(patient);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 };
 
-// @desc    Delete patient
-// @route   DELETE /api/patients/:id
+// @desc Delete a patient
+// @route DELETE /api/patients/:id
 exports.deletePatient = async (req, res) => {
   try {
-    const deleted = await Patient.findByIdAndDelete(req.params.id);
-    if (!deleted) return res.status(404).json({ message: 'Patient not found' });
+    const patient = await Patient.findByIdAndDelete(req.params.id);
+    if (!patient) return res.status(404).json({ message: 'Patient not found' });
     res.status(200).json({ message: 'Patient deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
