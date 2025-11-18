@@ -1,63 +1,94 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import api from '../api/api';
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
 
-export default function EditPatient(){
+function EditPatient() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [form, setForm] = useState({ name:'', age:'', gender:'', diagnosis:'', contact:'' });
-  const [loading, setLoading] = useState(true);
+  const [patient, setPatient] = useState({
+    name: "",
+    age: "",
+    gender: "",
+    diagnosis: "",
+  });
 
+  // Fetch the existing patient data
   useEffect(() => {
-    const load = async () => {
-      try {
-        const { data } = await api.get(`/patients/${id}`);
-        setForm({ name:data.name, age:data.age, gender:data.gender, diagnosis:data.diagnosis || '', contact:data.contact || '' });
-      } catch (err) {
-        console.error(err);
-        alert('Failed to load patient');
-      } finally {
-        setLoading(false);
-      }
-    };
-    load();
+    axios
+      .get(`${import.meta.env.VITE_API_URL}/api/patients/${id}`)
+      .then((res) => setPatient(res.data))
+      .catch((err) => console.log(err));
   }, [id]);
 
-  const onChange = (e) => setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
-
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await api.put(`/patients/${id}`, form);
-      alert('Patient updated');
-      navigate('/');
-    } catch (err) {
-      console.error(err);
-      alert('Update failed');
-    }
+  // Handle input changes
+  const handleChange = (e) => {
+    setPatient({ ...patient, [e.target.name]: e.target.value });
   };
 
-  if (loading) return <p>Loading patient...</p>;
+  // Update patient in backend
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .put(`${import.meta.env.VITE_API_URL}/api/patients/${id}`, patient)
+      .then(() => {
+        alert("✅ Patient updated successfully!");
+        navigate("/"); // redirect to Patients list
+      })
+      .catch((err) => console.error("Update failed:", err));
+  };
 
   return (
-    <div>
-      <h2>Edit Patient</h2>
-      <form onSubmit={onSubmit} className="card">
-        <label>Name <input name="name" value={form.name} onChange={onChange} required /></label>
-        <label>Age <input name="age" type="number" value={form.age} onChange={onChange} required /></label>
-        <label>Gender
-          <select name="gender" value={form.gender} onChange={onChange} required>
-            <option value="">Select</option>
-            <option>Male</option><option>Female</option><option>Other</option>
-          </select>
-        </label>
-        <label>Contact <input name="contact" value={form.contact} onChange={onChange} /></label>
-        <label>Diagnosis <input name="diagnosis" value={form.diagnosis} onChange={onChange} /></label>
-        <div style={{marginTop:12}}>
-          <button type="submit">Save</button>
-          <button type="button" onClick={() => navigate('/')}>Cancel</button>
-        </div>
+    <div className="p-6 max-w-lg mx-auto bg-white shadow-md rounded-lg">
+      <h2 className="text-xl font-semibold mb-4">Edit Patient</h2>
+
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <input
+          type="text"
+          name="name"
+          value={patient.name}
+          onChange={handleChange}
+          placeholder="Full Name"
+          className="border p-2 rounded"
+          required
+        />
+        <input
+          type="number"
+          name="age"
+          value={patient.age}
+          onChange={handleChange}
+          placeholder="Age"
+          className="border p-2 rounded"
+          required
+        />
+        <select
+          name="gender"
+          value={patient.gender}
+          onChange={handleChange}
+          className="border p-2 rounded"
+          required
+        >
+          <option value="">Select Gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+        <input
+          type="text"
+          name="diagnosis"
+          value={patient.diagnosis}
+          onChange={handleChange}
+          placeholder="Diagnosis"
+          className="border p-2 rounded"
+        />
+
+        <button
+          type="submit"
+          className="bg-blue-500 hover:bg-blue-600 text-white py-2 rounded"
+        >
+          Save Changes
+        </button>
       </form>
     </div>
   );
 }
+
+export default EditPatient;

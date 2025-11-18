@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { getPatients, createPatient, deletePatient } from "../api/api";
+import { Link } from "react-router-dom";
+
 
 function Patients() {
   const [patients, setPatients] = useState([]);
@@ -86,7 +88,7 @@ function Patients() {
             >
               Delete
             </button>
-          </li>
+            <Link to={`/edit/${p._id}`} className="text-blue-600 hover:underline">Edit</Link></li>
         ))}
       </ul>
     </div>

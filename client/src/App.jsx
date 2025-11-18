@@ -1,31 +1,25 @@
 import React from "react";
-import Home from "./pages/home";
+import { Routes, Route, Link } from "react-router-dom";
+import Home from "./pages/Home";
 import EditPatient from "./pages/EditPatient";
 import Patients from "./pages/Patients";
+<Route path="/landing" element={<homeLanding />} />
+
 
 function App() {
   return (
-    <Router>
+    <>
       <nav className="bg-gray-200 p-4 flex justify-between">
-        <h2 className="font-bold text-lg">Clinic Booking — Admin</h2>
-        <div className="space-x-4">
-          <Link to="/" className="text-blue-600 hover:underline">
-            Home
-          </Link>
-          <Link to="/patients" className="text-blue-600 hover:underline">
-            Patients
-          </Link>
-        </div>
+        <h2 className="font-bold">HealthCare MERN App</h2>
+        <Link to="/">Patients</Link>
       </nav>
 
-      <main className="container mx-auto p-4">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/patients" element={<Patients />} />
-          <Route path="/edit/:id" element={<EditPatient />} />
-        </Routes>
-      </main>
-    </Router>
+      <Routes>
+        <Route path="/" element={<Patients />} />
+        <Route path="/edit/:id" element={<EditPatient />} />
+        <Route path="/home" element={<Home />} />
+      </Routes>
+    </>
   );
 }
 
