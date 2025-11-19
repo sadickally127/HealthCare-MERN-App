@@ -20,5 +20,10 @@ app.get('/', (req, res) => {
 const patientRoutes = require('./routes/patientRoutes');
 app.use('/api/patients', patientRoutes);
 
+// Authentication routes
+// import authRoutes from "./routes/authRoutes.js";
+// app.use("/api/auth", authRoutes);
+
+
 const PORT = process.env.PORT || 9000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
